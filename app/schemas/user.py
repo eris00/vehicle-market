@@ -7,8 +7,6 @@ class UserBase(BaseModel):
     first_name: str
     last_name: str
     phone_number: str
-    has_viber: bool
-    has_whatsapp: bool
     is_active: bool = True
 
 
@@ -21,8 +19,6 @@ class UserUpdate(BaseModel):
     first_name: Optional[str]
     last_name: Optional[str]
     phone_number: Optional[str]
-    has_viber: Optional[bool]
-    has_whatsapp: Optional[bool]
     is_active: Optional[bool]
 
 

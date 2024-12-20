@@ -1,7 +1,8 @@
 import os
 import sys
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from logging.config import fileConfig
 
@@ -13,6 +14,19 @@ from app.core.config import settings
 from app.core.database import Base
 
 from app.models import user
+from app.models import brands
+from app.models import body_types
+from app.models import drivetrains
+from app.models import emission_standards
+from app.models import equipment_categories
+from app.models import equipments
+from app.models import fuels
+from app.models import images
+from app.models import location
+from app.models import models
+from app.models import posts
+from app.models import transmissions
+from app.models import vehicle_types
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

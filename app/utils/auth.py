@@ -3,11 +3,11 @@ from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
-from crud.user import get_user_by_email
-from core.database import db
+from app.crud.user import get_user_by_email
+from app.core.database import db
 
-from schemas.user import TokenData
-from core.config import settings
+from app.schemas.user import TokenData
+from app.core.config import settings
 
 SECRET_KEY = settings.SECRET_KEY
 ALGORITHM = settings.ALGORITHM
