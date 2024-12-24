@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 class LocationBase(BaseModel):
     id: int
@@ -6,5 +6,4 @@ class LocationBase(BaseModel):
     country: str
     region: str | None
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)  

@@ -1,5 +1,11 @@
 from typing import List, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
+
+from app.models.posts import Post
+from app.schemas.equipments import EquipmentBase
+from app.schemas.images import Images
+from app.schemas.location import LocationBase
+from app.schemas.user import UserResponse
 
 class PostBase(BaseModel):
     title: str
@@ -8,10 +14,13 @@ class PostBase(BaseModel):
     year: int
     mileage: int
     engine_displacement: float
+    images: List[Images]
     kilowatts: int
     horsepowers: int
     color: str
     doors_number: Optional[str]
+
+class PostRequest(PostBase):
     user_id: int
     fuel_id: int
     model_id: int
@@ -24,30 +33,46 @@ class PostBase(BaseModel):
     body_type_id: int
     equipment_ids: List[int]
 
+class PostResponse(PostBase):
+    id: int
+    user: UserResponse
+    fuel: str
+    brand: str
+    model: str
+    location: LocationBase
+    emission_standard: str
+    drivetrain: str
+    transmission: str
+    vehicle_type: str
+    body_type: str
+    equipment: List[EquipmentBase]
 
-"""
-
-Example:
-{
-    "title": "Audi A4",
-    "price": 20000.0,
-    "year": 2018,
-    "mileage": 50000,
-    "engine_displacement": 2.0,
-    "kilowatts": 140,
-    "horsepowers": 190,
-    "color": "Black",
-    "user_id": 1,
-    "fuel_id": 2,
-    "model_id": 3,
-    "brand_id": 1,
-    "location_id": 4,
-    "emission_standard_id": 5,
-    "drivetrain_id": 6,
-    "transmission_id": 7,
-    "vehicle_type_id": 8,
-    "body_type_id": 9,
-    "equipment_ids": [1, 2, 3]
-}
-
-"""
+    @classmethod
+    def from_orm(cls, post: Post):
+        return cls(
+            id=post.id,
+            title=post.title,
+            description=post.description,
+            price=post.price,
+            year=post.year,
+            mileage=post.mileage,
+            engine_displacement=post.engine_displacement,
+            images=[Images.model_validate(img) for img in post.images],
+            kilowatts=post.kilowatts,
+            horsepowers=post.horsepowers,
+            color=post.color,
+            doors_number=post.doors_number,
+            user=UserResponse.model_validate(post.user),
+            fuel=post.fuel.name if post.fuel else None,
+            brand=post.brand.name if post.brand else None,
+            model=post.model.name if post.model else None,
+            location=LocationBase.model_validate(post.location),
+            emission_standard=post.emission_standard.name if post.emission_standard else None,
+            drivetrain=post.drivetrain.name if post.drivetrain else None,
+            transmission=post.transmission.name if post.transmission else None,
+            vehicle_type=post.vehicle_type.name if post.vehicle_type else None,
+            body_type=post.body_type.name if post.body_type else None,
+            equipment=[EquipmentBase.model_validate(equip) for equip in post.equipments],
+        )
+    
+    model_config = ConfigDict(from_attributes=True)
