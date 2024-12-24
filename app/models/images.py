@@ -10,6 +10,6 @@ class Image(Base):
     image_url: Mapped[str] = mapped_column(String, nullable=False)
     is_primary: Mapped[str] = mapped_column(String, nullable=True)
     created_at: Mapped[datetime.datetime] = mapped_column(DateTime, insert_default=func.now())
-    post_id: Mapped[int] = mapped_column(Integer, ForeignKey("posts.id"), nullable=False)
+    post_id: Mapped[int] = mapped_column(Integer, ForeignKey("posts.id", ondelete="CASCADE"), nullable=False)
     post: Mapped["Post"] = relationship("Post", back_populates="images")
     

@@ -1,5 +1,7 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.routers import auth, vehicles, posts
 
@@ -16,6 +18,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.mount("/media", StaticFiles(directory=os.path.join(os.getcwd(), "media")), name="media")
 
 app.include_router(auth.router)
 app.include_router(vehicles.router)

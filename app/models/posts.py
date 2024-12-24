@@ -43,7 +43,7 @@ class Post(Base):
     body_type_id: Mapped[int] = mapped_column(Integer, ForeignKey("body_types.id"), nullable=False)
 
     # relationship attributes
-    images: Mapped[list["Image"]] = relationship(back_populates="post")
+    images: Mapped[list["Image"]] = relationship("Image", back_populates="post", cascade="all, delete-orphan")
     equipments: Mapped[list["Equipment"]] = relationship(secondary="post_equipments", back_populates="posts")
 
     user: Mapped["User"] = relationship(back_populates="posts")
