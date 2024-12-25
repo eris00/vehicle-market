@@ -7,7 +7,6 @@ class UserBase(BaseModel):
     first_name: str
     last_name: str
     phone_number: str
-    is_active: bool = True
 
 
 class UserCreate(UserBase):
@@ -15,24 +14,15 @@ class UserCreate(UserBase):
 
 
 class UserUpdate(BaseModel):
-    email: Optional[EmailStr]
-    first_name: Optional[str]
-    last_name: Optional[str]
-    phone_number: Optional[str]
-    is_active: Optional[bool]
-
-
-class UserUpdate(BaseModel):
-    email: Optional[EmailStr] = None
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     phone_number: Optional[str] = None
-    is_active: Optional[bool] = None
     password: Optional[str] = None
 
 
 class UserResponse(UserBase):
     id: int
+    is_active: bool = True
     model_config = ConfigDict(from_attributes=True)
 
 
