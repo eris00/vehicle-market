@@ -5,8 +5,8 @@ from app.core.database import Base
 post_equipments = Table(
     "post_equipments",
     Base.metadata,
-    Column("post_id", ForeignKey("posts.id"), primary_key=True),
-    Column("equipment_id", ForeignKey("equipments.id"), primary_key=True),
+    Column("post_id", ForeignKey("posts.id", ondelete="CASCADE"), primary_key=True),
+    Column("equipment_id", ForeignKey("equipments.id", ondelete="CASCADE"), primary_key=True),
 )
 
 

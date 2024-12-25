@@ -7,6 +7,31 @@ from app.schemas.images import ImageRequest, ImageResponse
 from app.schemas.location import LocationBase
 from app.schemas.user import UserResponse
 
+class PostCreateRequest(BaseModel):
+    title: str
+    description: Optional[str] = None
+    price: float
+    year: int
+    mileage: int
+    engine_displacement: float
+    kilowatts: int
+    horsepowers: int
+    color: str
+    doors_number: Optional[str] = None
+    user_id: int
+    fuel_id: int
+    model_id: int
+    brand_id: int
+    location_id: int
+    emission_standard_id: int
+    drivetrain_id: int
+    transmission_id: int
+    vehicle_type_id: int
+    body_type_id: int
+    equipment_ids: str  # Raw string input like "1,2,3"
+    payload_capacity: Optional[str] = None
+    axle_count: Optional[str] = None
+
 class PostBase(BaseModel):
     title: str
     description: Optional[str]

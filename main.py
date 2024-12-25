@@ -3,13 +3,16 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from app.routers import auth, vehicles, posts
+from app.routers import auth, vehicles, posts, me
 
 app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to the FastAPI Vehicle Marketplace!"}
+    return {
+        "message": "Welcome to the Vehicle Marketplace Web Application",
+        "documentation_url": "/docs"
+    }
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,5 +25,6 @@ app.add_middleware(
 app.mount("/media", StaticFiles(directory=os.path.join(os.getcwd(), "media")), name="media")
 
 app.include_router(auth.router)
+app.include_router(me.router)
 app.include_router(vehicles.router)
 app.include_router(posts.router)
