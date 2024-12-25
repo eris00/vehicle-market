@@ -1,9 +1,9 @@
 
 from typing import List, Optional
-from app.crud.posts import create_post, delete_post_by_id, get_post_by_id, get_posts
+from app.crud.posts import create_post, delete_post_by_id, get_post_by_id, get_posts, update_post
 from app.models.posts import Post
 from app.schemas.images import ImageRequest
-from app.schemas.posts import PostCreateRequest, PostRequest, PostResponse
+from app.schemas.posts import PostCreateRequest, PostRequest, PostResponse, PostUpdateRequest
 from app.utils.auth import oauth2_scheme
 from app.core.database import db
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Path, UploadFile
@@ -44,6 +44,17 @@ def create_new_post(
     created_post = create_post(db, post_request)
     return PostResponse.from_orm(created_post)
 
+@router.put("/update_post/{post_id}", response_model=PostResponse)
+def update_post_route(
+    post_id: int,
+    updates: PostUpdateRequest,
+    db: db
+):
+    try:
+        updated_post = update_post(db, post_id, updates.model_dump(exclude_unset=True))
+        return PostResponse.from_orm(updated_post)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 @router.delete("/delete")
 def delete_post_and_images(db: db, post_id: int):

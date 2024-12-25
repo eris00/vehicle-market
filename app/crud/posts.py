@@ -1,4 +1,5 @@
 import os
+from typing import Any, Dict
 from uuid import uuid4
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
@@ -128,6 +129,20 @@ def save_images(db: Session, post_id: int, images: list[ImageRequest]):
     # Batch save to the database
     db.bulk_save_objects(images_to_save)
     db.commit()
+
+def update_post(db: Session, post_id: int, updates: Dict[str, Any]):
+
+    post = db.query(Post).filter(Post.id == post_id).one_or_none()
+    if not post:
+        raise ValueError(f"Post with ID {post_id} does not exist.")
+    
+    for key, value in updates.items():
+        if hasattr(post, key):
+            setattr(post, key, value)
+    
+    db.commit()
+    db.refresh(post)
+    return post
 
 
 def delete_post_by_id(db: Session, post_id: int):

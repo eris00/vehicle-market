@@ -7,31 +7,6 @@ from app.schemas.images import ImageRequest, ImageResponse
 from app.schemas.location import LocationBase
 from app.schemas.user import UserResponse
 
-class PostCreateRequest(BaseModel):
-    title: str
-    description: Optional[str] = None
-    price: float
-    year: int
-    mileage: int
-    engine_displacement: float
-    kilowatts: int
-    horsepowers: int
-    color: str
-    doors_number: Optional[str] = None
-    user_id: int
-    fuel_id: int
-    model_id: int
-    brand_id: int
-    location_id: int
-    emission_standard_id: int
-    drivetrain_id: int
-    transmission_id: int
-    vehicle_type_id: int
-    body_type_id: int
-    equipment_ids: str  # Raw string input like "1,2,3"
-    payload_capacity: Optional[str] = None
-    axle_count: Optional[str] = None
-
 class PostBase(BaseModel):
     title: str
     description: Optional[str]
@@ -59,6 +34,54 @@ class PostRequest(PostBase):
     body_type_id: int
     equipment_ids: List[int]
     images: List[ImageRequest]
+
+class PostCreateRequest(BaseModel):
+    title: str
+    description: Optional[str] = None
+    price: float
+    year: int
+    mileage: int
+    engine_displacement: float
+    kilowatts: int
+    horsepowers: int
+    color: str
+    doors_number: Optional[str] = None
+    user_id: int
+    fuel_id: int
+    model_id: int
+    brand_id: int
+    location_id: int
+    emission_standard_id: int
+    drivetrain_id: int
+    transmission_id: int
+    vehicle_type_id: int
+    body_type_id: int
+    equipment_ids: str  # Raw string input like "1,2,3"
+    payload_capacity: Optional[str] = None
+    axle_count: Optional[str] = None
+
+class PostUpdateRequest(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    price: Optional[float] = None
+    year: Optional[int] = None
+    mileage: Optional[int] = None
+    engine_displacement: Optional[float] = None
+    kilowatts: Optional[int] = None
+    horsepowers: Optional[int] = None
+    color: Optional[str] = None
+    doors_number: Optional[str] = None
+    fuel_id: Optional[int] = None
+    model_id: Optional[int] = None
+    brand_id: Optional[int] = None
+    location_id: Optional[int] = None
+    emission_standard_id: Optional[int] = None
+    drivetrain_id: Optional[int] = None
+    transmission_id: Optional[int] = None
+    vehicle_type_id: Optional[int] = None
+    body_type_id: Optional[int] = None
+    payload_capacity: Optional[str] = None
+    axle_count: Optional[str] = None
 
 class PostResponse(PostBase):
     id: int

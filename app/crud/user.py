@@ -20,3 +20,18 @@ def create_user(db:Session, user: UserCreate):
 
 def verify_password(plain_password: str, hash_password: str) -> bool:
     return pwd_context.verify(plain_password, hash_password)
+
+def update_user(db: Session, user_id: int, updates: dict):
+    user = db.query(User).filter(User.id == user_id).one_or_none()
+    if not user:
+        raise ValueError(f"User with ID {user_id} does not exist.")
+    
+    for key, value in updates.items():
+        if key == "password" and value:
+            setattr(user, key, pwd_context.hash(value))
+        elif value is not None:
+            setattr(user, key, value)
+    
+    db.commit()
+    db.refresh(user)
+    return user
