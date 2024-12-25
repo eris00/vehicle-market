@@ -7,3 +7,7 @@ class BodyTypeBase(BaseModel):
 
     class Config:
         orm_mode = True
+
+class BodyVehicle(BaseModel):
+    id: int
+    name: str

@@ -7,3 +7,7 @@ class ModelBase(BaseModel):
 
     class Config:
         orm_mode = True
+
+class ModelBrand(BaseModel):
+    id: int
+    name: str
