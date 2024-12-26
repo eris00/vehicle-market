@@ -12,6 +12,10 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password: str
 
+class UserRegister(UserBase):
+    password: str
+    is_active: int = True
+
 
 class UserUpdate(BaseModel):
     first_name: Optional[str] = None

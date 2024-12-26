@@ -51,7 +51,7 @@ def update_post_route(
     db: db
 ):
     try:
-        updated_post = update_post(db, post_id, updates.model_dump(exclude_unset=True))
+        updated_post = update_post(db, post_id, updates.dict(exclude_unset=True))
         return PostResponse.from_orm(updated_post)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))

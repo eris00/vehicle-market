@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from app.crud.user import create_user, get_user_by_email, verify_password
-from app.schemas.user import Token, UserBase, UserCreate, UserResponse
+from app.schemas.user import Token, UserBase, UserCreate, UserRegister, UserResponse
 from app.utils.auth import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token, get_current_user
 from app.core.database import db
 router = APIRouter(tags=["auth"])
@@ -21,7 +21,7 @@ def login(db:db, form_data: OAuth2PasswordRequestForm = Depends()):
     return {"access_token": access_token, "token_type": "bearer"}
 
 @router.post("/register", response_model=Token)
-def register(db: db, user_data: UserCreate):
+def register(db: db, user_data: UserRegister):
     existing_user = get_user_by_email(db, email=user_data.email)
     if existing_user:
         raise HTTPException(
