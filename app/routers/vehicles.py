@@ -27,7 +27,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from app.models.transmissions import Transmission
 from sqlalchemy.orm import joinedload
 
-router = APIRouter(prefix="/vehicles", tags=["vehicles"], dependencies=[Depends(oauth2_scheme)])
+router = APIRouter(prefix="/vehicles", tags=["vehicles"])
 
 @router.get("/vehicle-types", response_model=List[VehicleTypeBase])
 def get_transmissions(db: db):

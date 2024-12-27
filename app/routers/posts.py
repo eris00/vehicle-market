@@ -8,7 +8,7 @@ from app.utils.auth import oauth2_scheme
 from app.core.database import db
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Path, UploadFile
 
-router = APIRouter(prefix="/posts", tags=["posts"], dependencies=[Depends(oauth2_scheme)])
+router = APIRouter(prefix="/posts", tags=["posts"])
 
 
 @router.get("/get_post/{post_id}", response_model=PostResponse)
@@ -25,7 +25,7 @@ def get_all_posts(db: db):
     return [PostResponse.from_orm(post) for post in posts]
 
 
-@router.post("/create_post", response_model=PostResponse, status_code=201)
+@router.post("/create_post", response_model=PostResponse, status_code=201, dependencies=[Depends(oauth2_scheme)])
 def create_new_post(
     db: db,
     post_data: PostCreateRequest = Depends(),
@@ -44,7 +44,7 @@ def create_new_post(
     created_post = create_post(db, post_request)
     return PostResponse.from_orm(created_post)
 
-@router.put("/update_post/{post_id}", response_model=PostResponse)
+@router.put("/update_post/{post_id}", response_model=PostResponse, dependencies=[Depends(oauth2_scheme)])
 def update_post_route(
     post_id: int,
     updates: PostUpdateRequest,
@@ -56,7 +56,7 @@ def update_post_route(
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
-@router.delete("/delete")
+@router.delete("/delete", dependencies=[Depends(oauth2_scheme)])
 def delete_post_and_images(db: db, post_id: int):
     return delete_post_by_id(db, post_id)
     
