@@ -16,7 +16,6 @@ class UserRegister(UserBase):
     password: str
     is_active: int = True
 
-
 class UserUpdate(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None

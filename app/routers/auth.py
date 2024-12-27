@@ -2,7 +2,7 @@ from datetime import timedelta
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
-from app.crud.user import create_user, get_user_by_email, verify_password
+from app.crud.user import create_user, get_user_by_email, validate_email_format, verify_password
 from app.schemas.user import Token, UserBase, UserCreate, UserRegister, UserResponse
 from app.utils.auth import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token, get_current_user
 from app.core.database import db
@@ -10,11 +10,12 @@ router = APIRouter(tags=["auth"])
 
 @router.post("/login", response_model=Token)
 def login(db:db, form_data: OAuth2PasswordRequestForm = Depends()):
+    validate_email_format(form_data.username)
     user = get_user_by_email(db, email=form_data.username)
     is_pwd_verify = verify_password(form_data.password, user.password)
     if not user or not is_pwd_verify:
         raise HTTPException(
-            status_code=404,
+            status_code=401,
             detail = "Incorrect username or passsword"
         )
     access_token = create_access_token(data={"sub": user.email}, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))

@@ -1,4 +1,5 @@
-from fastapi import Depends
+import re
+from fastapi import Depends, HTTPException
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 
@@ -7,8 +8,23 @@ from app.schemas.user import UserCreate
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+EMAIL_REGEX = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+
+def validate_email_format(email: str):
+    if not re.match(EMAIL_REGEX, email):
+        raise HTTPException(
+            status_code=422,
+            detail="Invalid email format"
+        )
+
 def get_user_by_email(db:Session, email:str):
-    return db.query(User).filter(User.email == email).first()
+    user = db.query(User).filter(User.email == email).first()
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="User not found"
+        )
+    return user
 
 def create_user(db:Session, user: UserCreate):
     hashed_password = pwd_context.hash(user.password)
