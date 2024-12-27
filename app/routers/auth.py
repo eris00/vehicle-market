@@ -2,7 +2,7 @@ from datetime import timedelta
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
-from app.crud.user import create_user, get_user_by_email, validate_email_format, verify_password
+from app.crud.user import create_user, get_user_by_email, get_user_by_email_register, validate_email_format, verify_password
 from app.schemas.user import Token, UserBase, UserCreate, UserRegister, UserResponse
 from app.utils.auth import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token, get_current_user
 from app.core.database import db
@@ -23,7 +23,7 @@ def login(db:db, form_data: OAuth2PasswordRequestForm = Depends()):
 
 @router.post("/register", response_model=Token)
 def register(db: db, user_data: UserRegister):
-    existing_user = get_user_by_email(db, email=user_data.email)
+    existing_user = get_user_by_email_register(db, email=user_data.email)
     if existing_user:
         raise HTTPException(
             status_code=400,

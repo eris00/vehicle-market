@@ -17,6 +17,10 @@ def validate_email_format(email: str):
             detail="Invalid email format"
         )
 
+def get_user_by_email_register(db:Session, email:str):
+    user = db.query(User).filter(User.email == email).first()
+    return user
+
 def get_user_by_email(db:Session, email:str):
     user = db.query(User).filter(User.email == email).first()
     if not user:
